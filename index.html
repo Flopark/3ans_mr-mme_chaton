@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Machine à remonter le temps — Camille &amp; Florian</title>
+<meta name="description" content="Trois ans de nous, en un voyage.">
+
+<!-- =====================================================================
+     POLICES
+===================================================================== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   1) JETON DE DESIGN — "cabinet de voyage dans le temps"
+   Palette : nuit profonde + laiton + une pointe de corail chaud
+========================================================================= */
+:root{
+  --nuit-1:#0a0f24;
+  --nuit-2:#121a3a;
+  --nuit-3:#1b2550;
+  --laiton:#c68a4e;
+  --laiton-clair:#e8bd85;
+  --creme:#f4ecdb;
+  --corail:#e2917d;
+  --etoile:#f6e6ad;
+  --ligne: rgba(230,197,141,0.28);
+  --ombre: rgba(0,0,0,0.45);
+
+  --police-affiche:'Fraunces', serif;
+  --police-texte:'Literata', serif;
+  --police-main:'Caveat', cursive;
+
+  color-scheme: dark;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto;}
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  min-height:100dvh;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(198,138,78,0.10), transparent 55%),
+    radial-gradient(ellipse at 85% 30%, rgba(226,145,125,0.08), transparent 50%),
+    linear-gradient(180deg, var(--nuit-1), var(--nuit-2) 40%, var(--nuit-1));
+  color:var(--creme);
+  font-family:var(--police-texte);
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* champ d'étoiles discret en fond */
+.etoiles{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55;}
+.etoiles span{
+  position:absolute; width:2px; height:2px; background:var(--etoile);
+  border-radius:50%; animation:scintille 4s ease-in-out infinite;
+}
+@keyframes scintille{0%,100%{opacity:.15;} 50%{opacity:.9;}}
+
+a{color:inherit;}
+h1,h2,h3{font-family:var(--police-affiche); font-weight:600; margin:0;}
+p{margin:0;}
+
+.conteneur{max-width:760px; margin:0 auto; padding:0 22px; position:relative; z-index:1;}
+
+/* =========================================================================
+   2) CADRAN TEMPOREL — élément signature, fixe, indique l'année en cours
+========================================================================= */
+#cadran{
+  position:fixed;
+  right:14px;
+  bottom:18px;
+  z-index:40;
+  width:82px; height:82px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--nuit-3), var(--nuit-1) 70%);
+  border:2px solid var(--laiton);
+  box-shadow:0 6px 20px var(--ombre), inset 0 0 12px rgba(198,138,78,0.35);
+  display:flex; align-items:center; justify-content:center;
+  flex-direction:column;
+  opacity:0; transform:scale(.7);
+  transition:opacity .5s ease, transform .5s ease;
+}
+#cadran.visible{opacity:1; transform:scale(1);}
+#cadran .aiguille{
+  font-family:var(--police-affiche); font-weight:700; font-size:1.05rem; color:var(--laiton-clair);
+  line-height:1;
+}
+#cadran .sous-texte{font-size:.55rem; letter-spacing:.14em; text-transform:uppercase; color:var(--creme); opacity:.7; margin-top:3px;}
+
+@media (max-width:480px){
+  #cadran{width:64px; height:64px; right:10px; bottom:14px;}
+  #cadran .aiguille{font-size:.85rem;}
+  #cadran .sous-texte{font-size:.44rem;}
+}
+
+/* =========================================================================
+   3) ÉCRAN D'INTRODUCTION
+========================================================================= */
+#intro{
+  min-height:100vh; min-height:100dvh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:60px 22px; position:relative; z-index:1;
+}
+.eyebrow{
+  font-family:var(--police-main); font-size:1.3rem; color:var(--corail);
+  letter-spacing:.02em;
+}
+#intro h1{
+  font-size:clamp(2.2rem, 8vw, 3.6rem);
+  color:var(--creme);
+  margin:10px 0 6px;
+  line-height:1.05;
+}
+#intro h1 em{
+  font-style:italic; color:var(--laiton-clair);
+}
+.sous-titre{
+  font-size:1.02rem; color:var(--creme); opacity:.75; max-width:440px; margin:14px auto 0;
+}
+
+/* la molette / cadran principal cliquable */
+.molette-principale{
+  margin:44px auto 18px;
+  width:150px; height:150px;
+  border-radius:50%;
+  position:relative;
+  background:
+    repeating-conic-gradient(from 0deg, var(--laiton) 0deg 4deg, transparent 4deg 18deg);
+  display:flex; align-items:center; justify-content:center;
+  animation:tourne 40s linear infinite;
+}
+@keyframes tourne{to{transform:rotate(360deg);}}
+.molette-interieure{
+  width:104px; height:104px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--nuit-3), var(--nuit-1) 75%);
+  border:2px solid var(--laiton-clair);
+  display:flex; align-items:center; justify-content:center;
+  animation:tourne-inverse 40s linear infinite;
+}
+@keyframes tourne-inverse{to{transform:rotate(-360deg);}}
+.molette-interieure span{font-size:1.8rem;}
+
+.bouton-demarrer{
+  font-family:var(--police-affiche); font-weight:600; font-size:1.05rem;
+  color:var(--nuit-1); background:linear-gradient(180deg, var(--laiton-clair), var(--laiton));
+  border:none; padding:15px 34px; border-radius:100px; cursor:pointer;
+  box-shadow:0 10px 24px rgba(198,138,78,0.35);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.bouton-demarrer:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(198,138,78,0.45);}
+.bouton-demarrer:focus-visible{outline:3px solid var(--corail); outline-offset:3px;}
+
+.compteur-jours{
+  margin-top:30px; font-size:.92rem; color:var(--creme); opacity:.65;
+}
+.compteur-jours strong{color:var(--laiton-clair); font-weight:600; opacity:1;}
+
+.scroll-cue{
+  margin-top:50px; font-size:.75rem; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--creme); opacity:.4;
+}
+
+/* =========================================================================
+   4) RAIL CHRONOLOGIQUE + ÉTAPES
+========================================================================= */
+#voyage{position:relative; padding:40px 0 20px;}
+
+.rail{
+  position:absolute; left:22px; top:0; bottom:0; width:2px;
+  background:linear-gradient(180deg, transparent, var(--ligne) 6%, var(--ligne) 94%, transparent);
+  z-index:0;
+}
+@media (min-width:560px){ .rail{left:50%; transform:translateX(-1px);} }
+
+.etape{
+  position:relative;
+  padding:26px 0 26px 54px;
+  z-index:1;
+}
+@media (min-width:560px){
+  .etape{padding-left:0; width:46%;}
+  .etape:nth-child(odd){margin-right:54%;}
+  .etape:nth-child(even){margin-left:54%;}
+}
+
+.etape .pastille{
+  position:absolute; left:14px; top:30px;
+  width:18px; height:18px; border-radius:50%;
+  background:var(--nuit-1); border:2px solid var(--laiton);
+  transition:background .4s ease, box-shadow .4s ease;
+}
+@media (min-width:560px){
+  .etape:nth-child(odd) .pastille{right:-9px; left:auto;}
+  .etape:nth-child(even) .pastille{left:-9px;}
+}
+.etape.actif .pastille{background:var(--laiton); box-shadow:0 0 0 6px rgba(198,138,78,0.2);}
+
+.carte{
+  background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+  border:1px solid var(--ligne);
+  border-radius:18px;
+  padding:22px;
+  backdrop-filter:blur(2px);
+  opacity:0; transform:translateY(18px);
+  transition:opacity .7s ease, transform .7s ease;
+}
+.etape.actif .carte{opacity:1; transform:translateY(0);}
+
+.date-etape{
+  font-family:var(--police-main); font-size:1.25rem; color:var(--corail);
+}
+.titre-etape{
+  font-size:1.4rem; color:var(--creme); margin:2px 0 14px;
+}
+
+.cadre-photo{
+  width:100%; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
+  border:1px solid var(--ligne); margin-bottom:14px; position:relative;
+  background:linear-gradient(135deg, var(--nuit-3), var(--nuit-1));
+}
+.cadre-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+.cadre-photo .placeholder{
+  position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; padding:14px; text-align:center; color:var(--creme); opacity:.55; font-size:.8rem;
+}
+.cadre-photo .placeholder span:first-child{font-size:1.6rem;}
+
+.texte-etape{font-size:.98rem; line-height:1.55; color:var(--creme); opacity:.9;}
+
+.bouton-secret{
+  margin-top:16px; display:inline-flex; align-items:center; gap:8px;
+  background:none; border:1px solid var(--laiton); color:var(--laiton-clair);
+  font-family:var(--police-texte); font-size:.82rem; padding:8px 14px; border-radius:100px;
+  cursor:pointer; transition:background .2s ease;
+}
+.bouton-secret:hover{background:rgba(198,138,78,0.12);}
+.bouton-secret:focus-visible{outline:2px solid var(--corail); outline-offset:2px;}
+
+.message-secret{
+  margin-top:12px; font-family:var(--police-main); font-size:1.15rem; color:var(--etoile);
+  max-height:0; overflow:hidden; opacity:0; transition:max-height .5s ease, opacity .5s ease, margin-top .5s ease;
+}
+.message-secret.ouvert{max-height:200px; opacity:1;}
+
+/* =========================================================================
+   5) QUIZ
+========================================================================= */
+#quiz{padding:70px 0 30px; text-align:center;}
+#quiz .eyebrow{display:block; margin-bottom:8px;}
+#quiz h2{font-size:clamp(1.6rem,6vw,2.2rem); margin-bottom:10px;}
+.quiz-intro{opacity:.7; font-size:.95rem; max-width:420px; margin:0 auto 34px;}
+
+.question-bloc{
+  border:1px solid var(--ligne); border-radius:16px; padding:20px; margin-bottom:18px;
+  text-align:left; background:rgba(255,255,255,0.02);
+}
+.question-bloc h3{font-size:1.05rem; color:var(--creme); margin-bottom:14px; font-family:var(--police-texte); font-weight:600;}
+.options{display:flex; flex-direction:column; gap:9px;}
+.option{
+  border:1px solid var(--ligne); background:rgba(255,255,255,0.02); color:var(--creme);
+  padding:11px 14px; border-radius:10px; text-align:left; cursor:pointer; font-size:.92rem;
+  font-family:var(--police-texte); transition:border-color .2s ease, background .2s ease;
+}
+.option:hover{border-color:var(--laiton);}
+.option:focus-visible{outline:2px solid var(--corail); outline-offset:2px;}
+.option.bonne{border-color:#8fc9a0; background:rgba(143,201,160,0.14); color:#c9ecd1;}
+.option.mauvaise{border-color:var(--corail); background:rgba(226,145,125,0.12);}
+.option[disabled]{cursor:default;}
+
+.etat-quiz{margin-top:26px; font-size:.95rem; color:var(--laiton-clair); min-height:1.4em;}
+
+.bouton-debloquer{
+  margin-top:24px; font-family:var(--police-affiche); font-weight:600; font-size:1rem;
+  color:var(--nuit-1); background:linear-gradient(180deg, var(--laiton-clair), var(--laiton));
+  border:none; padding:14px 30px; border-radius:100px; cursor:pointer;
+  opacity:.35; pointer-events:none; transition:opacity .4s ease, transform .2s ease;
+}
+.bouton-debloquer.actif{opacity:1; pointer-events:auto;}
+.bouton-debloquer.actif:hover{transform:translateY(-2px);}
+
+/* =========================================================================
+   6) DÉCLARATION FINALE
+========================================================================= */
+#finale{
+  min-height:100vh; min-height:100dvh;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  padding:70px 22px; position:relative;
+}
+
+.enveloppe{
+  cursor:pointer; user-select:none;
+  width:170px; height:120px; margin:0 auto 26px; position:relative;
+}
+.enveloppe .corps{
+  position:absolute; inset:0; background:linear-gradient(180deg, var(--nuit-3), var(--nuit-2));
+  border:2px solid var(--laiton); border-radius:8px;
+}
+.enveloppe .rabat{
+  position:absolute; top:-2px; left:-2px; right:-2px; height:62px;
+  background:linear-gradient(160deg, var(--laiton-clair), var(--laiton));
+  clip-path:polygon(0 0, 100% 0, 50% 78%);
+  transform-origin:top center; transition:transform .6s cubic-bezier(.4,0,.2,1);
+  border-radius:8px 8px 0 0;
+}
+.enveloppe.ouverte .rabat{transform:rotateX(180deg);}
+.enveloppe .cachet{
+  position:absolute; top:32px; left:50%; transform:translateX(-50%);
+  width:34px; height:34px; border-radius:50%; background:var(--corail);
+  display:flex; align-items:center; justify-content:center; font-size:1rem;
+  border:2px solid var(--laiton-clair); z-index:2;
+}
+.enveloppe.ouverte .cachet{opacity:0; transition:opacity .3s ease;}
+
+.indice-enveloppe{font-size:.82rem; opacity:.55; letter-spacing:.1em; text-transform:uppercase; margin-bottom:38px;}
+
+.lettre{
+  max-width:520px; opacity:0; transform:translateY(14px);
+  transition:opacity .8s ease .15s, transform .8s ease .15s;
+}
+.lettre.visible{opacity:1; transform:translateY(0);}
+.lettre h2{font-size:clamp(1.7rem,6vw,2.5rem); color:var(--laiton-clair); margin-bottom:22px;}
+.lettre p{
+  font-size:1.08rem; line-height:1.75; color:var(--creme); opacity:.92; white-space:pre-line;
+  text-align:left;
+}
+.signature{
+  margin-top:26px; font-family:var(--police-main); font-size:1.8rem; color:var(--corail); text-align:right;
+}
+
+.confetti{position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden;}
+.confetti span{
+  position:absolute; top:-5%; font-size:1.1rem; opacity:0;
+  animation:tombe linear forwards;
+}
+@keyframes tombe{
+  0%{opacity:0; transform:translateY(0) rotate(0deg);}
+  10%{opacity:1;}
+  100%{opacity:0; transform:translateY(110vh) rotate(340deg);}
+}
+
+footer{
+  text-align:center; padding:30px 22px 60px; font-size:.78rem; opacity:.4; position:relative; z-index:1;
+}
+</style>
+</head>
+<body>
+
+<div class="etoiles" id="champ-etoiles" aria-hidden="true"></div>
+
+<!-- cadran temporel fixe -->
+<div id="cadran" aria-hidden="true">
+  <div class="aiguille" id="cadran-annee">2023</div>
+  <div class="sous-texte">en cours</div>
+</div>
+
+<div class="confetti" id="confetti" aria-hidden="true"></div>
+
+<!-- =====================================================================
+     ÉCRAN D'INTRODUCTION
+===================================================================== -->
+<section id="intro">
+  <span class="eyebrow" id="intro-eyebrow">pour Camille</span>
+  <h1>La machine à<br><em>remonter le temps</em></h1>
+  <p class="sous-titre">Trois ans de nous, rangés dans une seule machine. Tourne la molette pour embarquer.</p>
+
+  <div class="molette-principale" role="img" aria-label="Molette de la machine à remonter le temps">
+    <div class="molette-interieure"><span>⏳</span></div>
+  </div>
+
+  <button class="bouton-demarrer" id="bouton-demarrer">Démarrer le voyage</button>
+
+  <p class="compteur-jours" id="compteur-jours"></p>
+  <p class="scroll-cue">fais défiler ↓</p>
+</section>
+
+<!-- =====================================================================
+     VOYAGE DANS LE TEMPS — LES ÉTAPES
+     (généré automatiquement par le JS à partir de la liste ETAPES ci-dessous)
+===================================================================== -->
+<main class="conteneur">
+  <div id="voyage">
+    <div class="rail" aria-hidden="true"></div>
+    <!-- les .etape sont injectées ici par le script -->
+  </div>
+</main>
+
+<!-- =====================================================================
+     QUIZ
+===================================================================== -->
+<section id="quiz" class="conteneur">
+  <span class="eyebrow">avant de continuer</span>
+  <h2>Devine ce que je pense de toi</h2>
+  <p class="quiz-intro">Pas de piège, pas de culture générale — juste toi qui essaies de deviner ce que je pense vraiment. Réponds à tout pour débloquer la dernière étape du voyage.</p>
+  <div id="quiz-questions"><!-- injecté par le script --></div>
+  <p class="etat-quiz" id="etat-quiz" role="status"></p>
+  <button class="bouton-debloquer" id="bouton-debloquer">Débloquer la suite →</button>
+</section>
+
+<!-- =====================================================================
+     DÉCLARATION FINALE
+===================================================================== -->
+<section id="finale" class="conteneur">
+  <div id="bloc-enveloppe">
+    <div class="enveloppe" id="enveloppe" role="button" tabindex="0" aria-label="Ouvrir la lettre">
+      <div class="rabat"></div>
+      <div class="cachet">♥</div>
+      <div class="corps"></div>
+    </div>
+    <p class="indice-enveloppe">touche l'enveloppe pour l'ouvrir</p>
+  </div>
+
+  <article class="lettre" id="lettre">
+    <h2 id="lettre-titre"></h2>
+    <p id="lettre-texte"></p>
+    <p class="signature" id="lettre-signature"></p>
+  </article>
+</section>
+
+<footer>fait avec ♥ par Florian, pour Camille</footer>
+
+<script>
+/* =========================================================================
+   ============================  ZONE À MODIFIER  =========================
+   Tout ce dont tu as besoin pour personnaliser le site se trouve ici.
+   Le design plus bas n'a pas besoin d'être touché.
+========================================================================= */
+
+// ---- 1) Vos prénoms + la date du tout début -----------------------------
+const COUPLE = {
+  prenom1: "Camille",
+  prenom2: "Florian",
+  debut: "2023-07-27" // format AAAA-MM-JJ, sert au compteur de jours sur l'écran d'accueil
+};
+
+// ---- 2) Les étapes de votre voyage (ordre chronologique) ---------------
+// photo : mets le nom du fichier que tu auras placé dans le dossier "photos/"
+//         (ex: "photos/01-debut.jpg"). Si le fichier n'existe pas encore,
+//         un joli cadre "ajoute ta photo ici" s'affiche à la place — rien ne casse.
+const ETAPES = [
+  {
+    annee: "2023",
+    date: "27 juillet 2023",
+    titre: "Le point de départ",
+    photo: "photos/01-debut.jpg",
+    texte: "Ce jour-là, nos chemins se sont croisés pour de bon. Ni l'un ni l'autre ne savions encore tout ce qui allait suivre — mais quelque chose s'est mis en marche.",
+    secret: "Depuis ce jour, il ne s'est pas passé une seule journée sans que je pense à toi."
+  },
+  {
+    annee: "2023",
+    date: "décembre 2023",
+    titre: "Nausicaä, nos premiers pas dans le grand bleu",
+    photo: "photos/02-nausicaa.jpg",
+    texte: "Nez collés aux vitres des aquariums, on a regardé passer les requins et les méduses comme deux enfants émerveillés. Un des tout premiers souvenirs qu'on a construits ensemble.",
+    secret: "Je crois que c'est ce jour-là que j'ai compris qu'avec toi, même une sortie simple devient un souvenir pour la vie."
+  },
+  {
+    annee: "2023",
+    date: "décembre 2023",
+    titre: "Notre premier Noël",
+    photo: "photos/03-noel.jpg",
+    texte: "Les guirlandes, les cadeaux emballés à la va-vite, et toi en face de moi : notre tout premier Noël en couple, le début de nos petites traditions à nous.",
+    secret: "Chaque Noël depuis, je repense à celui-là, le tout premier — et j'ai hâte d'en vivre encore des dizaines avec toi."
+  },
+  {
+    annee: "2025",
+    date: "juin 2025",
+    titre: "Pairi Daiza, main dans la main",
+    photo: "photos/04-pairidaiza.jpg",
+    texte: "Une journée entière à observer pandas, girafes et flamants roses, en marchant des kilomètres sans même s'en rendre compte, trop occupés à parler et à rire.",
+    secret: "Ce jour-là, entourés de tous ces animaux, je me suis dit qu'il n'y avait pas meilleure compagnie que la tienne."
+  },
+  {
+    annee: "2025",
+    date: "août 2025",
+    titre: "Bruxelles et Mundo Pixar",
+    photo: "photos/05-bruxelles.jpg",
+    texte: "Gaufres, ruelles pavées et un peu de magie Pixar en prime : notre premier vrai voyage en couple, rien que nous deux, loin du quotidien.",
+    secret: "J'ai adoré découvrir une ville avec toi pour la première fois — et j'ai tout de suite eu envie qu'on recommence, encore et encore."
+  },
+  {
+    annee: "2025",
+    date: "novembre 2025",
+    titre: "Disneyland Paris, dans l'univers de Cars",
+    photo: "photos/06-disney.jpg",
+    texte: "Entourés de Flash McQueen et de Martin, on a dormi dans un hôtel tout droit sorti d'un dessin animé, et vécu une journée entière la tête dans les étoiles.",
+    secret: "Toi et moi dans un monde de conte de fées version Cars : le vrai bonheur, c'était juste d'être avec toi."
+  },
+  {
+    annee: "2026",
+    date: "février 2026",
+    titre: "Poudlard, version studios anglais",
+    photo: "photos/07-harrypotter.jpg",
+    texte: "Baguettes magiques, Grande Salle et Poudlard Express : on a passé une journée entière à croire, l'un comme l'autre, qu'on avait reçu notre lettre pour Poudlard.",
+    secret: "S'il existait vraiment un monde magique, je suis sûr qu'on y aurait été répartis dans la même maison."
+  },
+  {
+    annee: "2026",
+    date: "10 mai 2026",
+    titre: "Le 10 mai 2026",
+    photo: "photos/08-fiancailles.jpg",
+    texte: "La date où j'ai officiellement demandé à Camille de continuer cette histoire avec moi, pour de vrai, pour toujours.",
+    secret: "Depuis ce jour, je n'ai qu'une hâte : t'appeler ma femme."
+  }
+];
+
+// ---- 3) Le quiz "devine ce que je pense de toi" ---------------------------
+// correct : index (0,1,2...) de LA réponse que TOI tu choisis comme vraie.
+// ⚠️ Ce sont tes réponses à toi, Florian — remplace les options et le bon
+// index par ce que tu penses vraiment. Les questions posées sont des exemples,
+// change-les librement, l'idée c'est que Camille essaie de deviner ta pensée.
+const QUIZ = [
+  {
+    question: "Selon moi, ta plus belle qualité c'est...",
+    options: ["Ta douceur", "Ton rire", "Ta patience avec moi", "Un peu tout ça à la fois"],
+    correct: 3
+  },
+  {
+    question: "Le petit surnom que je te donne le plus souvent, c'est...",
+    options: ["Mon amour", "Ma puce", "Bébé", "Ma Camille"],
+    correct: 0
+  },
+  {
+    question: "Ce qui me fait le plus craquer chez toi, c'est...",
+    options: ["Ton sourire", "Ta façon de rire à mes blagues même quand elles sont nulles", "Tes câlins", "Ta bonne humeur"],
+    correct: 1
+  },
+  {
+    question: "Si je devais revivre un seul de nos voyages en boucle, ce serait...",
+    options: ["Bruxelles & Mundo Pixar", "L'Angleterre & Poudlard", "Disneyland & l'hôtel Cars", "Peu importe, tant que c'est avec toi"],
+    correct: 3
+  },
+  {
+    question: "Dans 10 ans, je nous imagine...",
+    options: ["Toujours en train de voyager ensemble", "Avec une maison bien à nous", "Encore en train de rire comme aujourd'hui", "Les trois à la fois"],
+    correct: 3
+  }
+];
+
+// ---- 4) La déclaration finale ---------------------------------------------
+const DECLARATION = {
+  titre: "Trois ans, et tellement plus à venir",
+  texte: `Camille,
+
+Trois ans se sont écoulés depuis ce 27 juillet 2023 où nos vies se sont mises à avancer ensemble. Entre les aquariums de Nausicaä, nos premiers Noëls, les animaux de Pairi Daiza, les rues de Bruxelles, les oreilles de Mickey, les décors de Poudlard, et ce 10 mai où tu as dit oui — chaque étape de cette machine à remonter le temps, c'est un morceau de toi et moi.
+
+Je ne t'ai pas seulement demandée en mariage ce jour-là. Je continue de te choisir, chaque matin, à chaque nouveau souvenir qu'on construit.
+
+Merci d'avoir fait de ces trois années les plus belles de ma vie. Il en reste tellement d'autres à vivre, à deux.
+
+Je t'aime.`,
+  signature: "— Florian"
+};
+
+/* =========================================================================
+   ==========================  FIN DE LA ZONE À MODIFIER  =================
+   Le code plus bas construit la page à partir de ce que tu as écrit au-dessus.
+   Tu n'as normalement rien à changer ici.
+========================================================================= */
+
+// ---- champ d'étoiles ----
+(function(){
+  const champ = document.getElementById('champ-etoiles');
+  const n = window.innerWidth < 600 ? 26 : 46;
+  for(let i=0;i<n;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*100+'%';
+    s.style.animationDelay = (Math.random()*4)+'s';
+    champ.appendChild(s);
+  }
+})();
+
+// ---- compteur de jours ----
+(function(){
+  const debut = new Date(COUPLE.debut+'T00:00:00');
+  const auj = new Date();
+  const jours = Math.max(0, Math.round((auj-debut)/86400000));
+  document.getElementById('compteur-jours').innerHTML =
+    `Ça fait <strong>${jours.toLocaleString('fr-FR')} jours</strong> que notre histoire s'écrit, page après page.`;
+  document.getElementById('intro-eyebrow').textContent = `pour ${COUPLE.prenom1}, de la part de ${COUPLE.prenom2}`;
+})();
+
+// ---- construction des étapes ----
+const voyage = document.getElementById('voyage');
+ETAPES.forEach((e, i) => {
+  const el = document.createElement('article');
+  el.className = 'etape';
+  el.dataset.annee = e.annee;
+  el.innerHTML = `
+    <div class="pastille"></div>
+    <div class="carte">
+      <p class="date-etape">${e.date}</p>
+      <h3 class="titre-etape">${e.titre}</h3>
+      <div class="cadre-photo">
+        <img src="${e.photo}" alt="${e.titre}" loading="lazy"
+             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="placeholder" style="display:none;">
+          <span>📷</span>
+          <span>Ajoute une photo ici<br>(${e.photo})</span>
+        </div>
+      </div>
+      <p class="texte-etape">${e.texte}</p>
+      <button class="bouton-secret" data-index="${i}">✦ Un secret vous attend</button>
+      <p class="message-secret" id="secret-${i}">${e.secret}</p>
+    </div>
+  `;
+  voyage.appendChild(el);
+});
+
+// révélation des secrets
+document.querySelectorAll('.bouton-secret').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const i = btn.dataset.index;
+    const msg = document.getElementById('secret-'+i);
+    const ouvert = msg.classList.toggle('ouvert');
+    btn.textContent = ouvert ? '✦ Refermer le secret' : '✦ Un secret vous attend';
+  });
+});
+
+// ---- scroll fluide depuis le bouton d'accueil ----
+document.getElementById('bouton-demarrer').addEventListener('click', () => {
+  document.getElementById('voyage').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+// ---- cadran temporel + activation des étapes au scroll ----
+const cadran = document.getElementById('cadran');
+const cadranAnnee = document.getElementById('cadran-annee');
+const etapesDom = document.querySelectorAll('.etape');
+
+const observer = new IntersectionObserver((entrees) => {
+  entrees.forEach(entree => {
+    if(entree.isIntersecting){
+      entree.target.classList.add('actif');
+      cadran.classList.add('visible');
+      cadranAnnee.textContent = entree.target.dataset.annee;
+    }
+  });
+}, {threshold:0.35});
+etapesDom.forEach(e => observer.observe(e));
+
+// masquer le cadran une fois revenu tout en haut / arrivé en bas
+const introObs = new IntersectionObserver((entrees) => {
+  entrees.forEach(entree => { if(entree.isIntersecting) cadran.classList.remove('visible'); });
+}, {threshold:0.6});
+introObs.observe(document.getElementById('intro'));
+
+// ---- quiz ----
+const quizContainer = document.getElementById('quiz-questions');
+const reponses = new Array(QUIZ.length).fill(null);
+
+QUIZ.forEach((q, qi) => {
+  const bloc = document.createElement('div');
+  bloc.className = 'question-bloc';
+  bloc.innerHTML = `
+    <h3>${qi+1}. ${q.question}</h3>
+    <div class="options">
+      ${q.options.map((opt, oi) => `<button class="option" data-q="${qi}" data-o="${oi}">${opt}</button>`).join('')}
+    </div>
+  `;
+  quizContainer.appendChild(bloc);
+});
+
+const etatQuiz = document.getElementById('etat-quiz');
+const boutonDebloquer = document.getElementById('bouton-debloquer');
+
+quizContainer.addEventListener('click', (e) => {
+  const target = e.target.closest('.option');
+  if(!target) return;
+  const qi = Number(target.dataset.q);
+  const oi = Number(target.dataset.o);
+  if(reponses[qi] !== null) return; // déjà répondu à cette question
+
+  reponses[qi] = oi;
+  const bonneReponse = QUIZ[qi].correct;
+  const optionsDeCetteQuestion = target.closest('.options').querySelectorAll('.option');
+  optionsDeCetteQuestion.forEach(o => o.disabled = true);
+
+  if(oi === bonneReponse){
+    target.classList.add('bonne');
+  } else {
+    target.classList.add('mauvaise');
+    optionsDeCetteQuestion[bonneReponse].classList.add('bonne');
+  }
+
+  verifierQuiz();
+});
+
+function verifierQuiz(){
+  const repondu = reponses.filter(r => r !== null).length;
+  const correct = reponses.filter((r, i) => r === QUIZ[i].correct).length;
+
+  if(repondu < QUIZ.length){
+    etatQuiz.textContent = `${repondu} / ${QUIZ.length} questions répondues...`;
+    return;
+  }
+  if(correct === QUIZ.length){
+    etatQuiz.textContent = "Tu me connais par cœur. ✦";
+    boutonDebloquer.classList.add('actif');
+  } else {
+    etatQuiz.textContent = `${correct} / ${QUIZ.length} — pas grave, maintenant tu sais. Tu peux quand même continuer.`;
+    boutonDebloquer.classList.add('actif');
+  }
+}
+
+boutonDebloquer.addEventListener('click', () => {
+  document.getElementById('finale').scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+// ---- déclaration finale ----
+document.getElementById('lettre-titre').textContent = DECLARATION.titre;
+document.getElementById('lettre-texte').textContent = DECLARATION.texte;
+document.getElementById('lettre-signature').textContent = DECLARATION.signature;
+
+const enveloppe = document.getElementById('enveloppe');
+const lettre = document.getElementById('lettre');
+const indice = document.querySelector('.indice-enveloppe');
+
+function ouvrirLettre(){
+  if(enveloppe.classList.contains('ouverte')) return;
+  enveloppe.classList.add('ouverte');
+  indice.style.opacity = '0';
+  setTimeout(() => {
+    lettre.classList.add('visible');
+    lancerConfettis();
+  }, 350);
+}
+enveloppe.addEventListener('click', ouvrirLettre);
+enveloppe.addEventListener('keydown', (e) => { if(e.key==='Enter' || e.key===' ') { e.preventDefault(); ouvrirLettre(); } });
+
+function lancerConfettis(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const conteneur = document.getElementById('confetti');
+  const symboles = ['♥','✦','★','⏳'];
+  for(let i=0;i<26;i++){
+    const s = document.createElement('span');
+    s.textContent = symboles[Math.floor(Math.random()*symboles.length)];
+    s.style.left = Math.random()*100+'%';
+    s.style.color = Math.random() > 0.5 ? 'var(--laiton-clair)' : 'var(--corail)';
+    s.style.animationDuration = (3+Math.random()*2.5)+'s';
+    s.style.animationDelay = (Math.random()*1.2)+'s';
+    conteneur.appendChild(s);
+    setTimeout(() => s.remove(), 7000);
+  }
+}
+</script>
+</body>
+</html>
