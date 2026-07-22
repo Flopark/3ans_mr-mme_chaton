@@ -3,21 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>3 ans de bonheur — Mr & &amp; Mme chaton</title>
+<title>3 ans de bonheur — Mr &amp; Mme chaton</title>
 <meta name="description" content="Trois ans de nous, SLAYY.">
 
-<!-- =====================================================================
-     POLICES
-===================================================================== -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* =========================================================================
-   1) JETON DE DESIGN — "cabinet de voyage dans le temps"
-   Palette : nuit profonde + laiton + une pointe de corail chaud
-========================================================================= */
 :root{
   --nuit-1:#0a0f24;
   --nuit-2:#121a3a;
@@ -58,7 +51,6 @@ body{
   position:relative;
 }
 
-/* champ d'étoiles discret en fond */
 .etoiles{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55;}
 .etoiles span{
   position:absolute; width:2px; height:2px; background:var(--etoile);
@@ -72,9 +64,6 @@ p{margin:0;}
 
 .conteneur{max-width:760px; margin:0 auto; padding:0 22px; position:relative; z-index:1;}
 
-/* =========================================================================
-   2) CADRAN TEMPOREL — élément signature, fixe, indique l'année en cours
-========================================================================= */
 #cadran{
   position:fixed;
   right:14px;
@@ -103,9 +92,6 @@ p{margin:0;}
   #cadran .sous-texte{font-size:.44rem;}
 }
 
-/* =========================================================================
-   3) ÉCRAN D'INTRODUCTION
-========================================================================= */
 #intro{
   min-height:100vh; min-height:100dvh;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -128,7 +114,6 @@ p{margin:0;}
   font-size:1.02rem; color:var(--creme); opacity:.75; max-width:440px; margin:14px auto 0;
 }
 
-/* la molette / cadran principal cliquable */
 .molette-principale{
   margin:44px auto 18px;
   width:150px; height:150px;
@@ -170,9 +155,6 @@ p{margin:0;}
   color:var(--creme); opacity:.4;
 }
 
-/* =========================================================================
-   4) RAIL CHRONOLOGIQUE + ÉTAPES
-========================================================================= */
 #voyage{position:relative; padding:40px 0 20px;}
 
 .rail{
@@ -223,17 +205,49 @@ p{margin:0;}
   font-size:1.4rem; color:var(--creme); margin:2px 0 14px;
 }
 
+/* ---- Galerie photo (carrousel) : même format que l'ancien cadre unique ---- */
 .cadre-photo{
   width:100%; aspect-ratio:4/3; border-radius:12px; overflow:hidden;
   border:1px solid var(--ligne); margin-bottom:14px; position:relative;
   background:linear-gradient(135deg, var(--nuit-3), var(--nuit-1));
 }
-.cadre-photo img{width:100%; height:100%; object-fit:cover; display:block;}
-.cadre-photo .placeholder{
+.galerie-piste{
+  display:flex; width:100%; height:100%;
+  overflow-x:auto; scroll-snap-type:x mandatory;
+  scrollbar-width:none; -webkit-overflow-scrolling:touch;
+}
+.galerie-piste::-webkit-scrollbar{display:none;}
+.galerie-diapo{
+  flex:0 0 100%; width:100%; height:100%; position:relative; scroll-snap-align:start;
+}
+.galerie-diapo img{width:100%; height:100%; object-fit:cover; display:block;}
+.galerie-diapo .placeholder{
   position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:8px; padding:14px; text-align:center; color:var(--creme); opacity:.55; font-size:.8rem;
 }
-.cadre-photo .placeholder span:first-child{font-size:1.6rem;}
+.galerie-diapo .placeholder span:first-child{font-size:1.6rem;}
+
+.galerie-fleche{
+  position:absolute; top:50%; transform:translateY(-50%); z-index:3;
+  width:30px; height:30px; border-radius:50%;
+  background:rgba(10,15,36,0.55); border:1px solid var(--laiton-clair); color:var(--creme);
+  font-size:1.15rem; line-height:1; display:flex; align-items:center; justify-content:center;
+  cursor:pointer; backdrop-filter:blur(2px); transition:background .2s ease;
+}
+.galerie-fleche:hover{background:rgba(198,138,78,0.6);}
+.galerie-fleche:focus-visible{outline:2px solid var(--corail); outline-offset:2px;}
+.galerie-fleche.gauche{left:8px;}
+.galerie-fleche.droite{right:8px;}
+
+.galerie-points{
+  position:absolute; bottom:9px; left:0; right:0; z-index:3;
+  display:flex; justify-content:center; gap:6px;
+}
+.galerie-points .point{
+  width:6px; height:6px; border-radius:50%; background:rgba(244,236,219,0.4);
+  transition:background .2s ease, transform .2s ease;
+}
+.galerie-points .point.actif{background:var(--laiton-clair); transform:scale(1.25);}
 
 .texte-etape{font-size:.98rem; line-height:1.55; color:var(--creme); opacity:.9;}
 
@@ -252,9 +266,6 @@ p{margin:0;}
 }
 .message-secret.ouvert{max-height:200px; opacity:1;}
 
-/* =========================================================================
-   5) QUIZ
-========================================================================= */
 #quiz{padding:70px 0 30px; text-align:center;}
 #quiz .eyebrow{display:block; margin-bottom:8px;}
 #quiz h2{font-size:clamp(1.6rem,6vw,2.2rem); margin-bottom:10px;}
@@ -288,9 +299,6 @@ p{margin:0;}
 .bouton-debloquer.actif{opacity:1; pointer-events:auto;}
 .bouton-debloquer.actif:hover{transform:translateY(-2px);}
 
-/* =========================================================================
-   6) DÉCLARATION FINALE
-========================================================================= */
 #finale{
   min-height:100vh; min-height:100dvh;
   display:flex; align-items:center; justify-content:center; text-align:center;
@@ -357,7 +365,6 @@ footer{
 
 <div class="etoiles" id="champ-etoiles" aria-hidden="true"></div>
 
-<!-- cadran temporel fixe -->
 <div id="cadran" aria-hidden="true">
   <div class="aiguille" id="cadran-annee">2023</div>
   <div class="sous-texte">en cours</div>
@@ -365,9 +372,6 @@ footer{
 
 <div class="confetti" id="confetti" aria-hidden="true"></div>
 
-<!-- =====================================================================
-     ÉCRAN D'INTRODUCTION
-===================================================================== -->
 <section id="intro">
   <span class="eyebrow" id="intro-eyebrow">pour Camille</span>
   <h1> Joyeux 3ans <br><em> Mon coeur </em></h1>
@@ -383,32 +387,21 @@ footer{
   <p class="scroll-cue">fais défiler ↓</p>
 </section>
 
-<!-- =====================================================================
-     VOYAGE DANS LE TEMPS — LES ÉTAPES
-     (généré automatiquement par le JS à partir de la liste ETAPES ci-dessous)
-===================================================================== -->
 <main class="conteneur">
   <div id="voyage">
     <div class="rail" aria-hidden="true"></div>
-    <!-- les .etape sont injectées ici par le script -->
   </div>
 </main>
 
-<!-- =====================================================================
-     QUIZ
-===================================================================== -->
 <section id="quiz" class="conteneur">
   <span class="eyebrow">avant de continuer</span>
   <h2>Devine ce que je pense de toi</h2>
   <p class="quiz-intro">Pas de piège, pas de culture générale — juste toi qui essaies de deviner ce que je pense vraiment. Réponds à tout pour débloquer la dernière surprise de ton amoureux.</p>
-  <div id="quiz-questions"><!-- injecté par le script --></div>
+  <div id="quiz-questions"></div>
   <p class="etat-quiz" id="etat-quiz" role="status"></p>
   <button class="bouton-debloquer" id="bouton-debloquer">Débloquer la suite →</button>
 </section>
 
-<!-- =====================================================================
-     DÉCLARATION FINALE
-===================================================================== -->
 <section id="finale" class="conteneur">
   <div id="bloc-enveloppe">
     <div class="enveloppe" id="enveloppe" role="button" tabindex="0" aria-label="Ouvrir la lettre">
@@ -431,27 +424,25 @@ footer{
 <script>
 /* =========================================================================
    ============================  ZONE À MODIFIER  =========================
-   Tout ce dont tu as besoin pour personnaliser le site se trouve ici.
-   Le design plus bas n'a pas besoin d'être touché.
 ========================================================================= */
 
-// ---- 1) Vos prénoms + la date du tout début -----------------------------
 const COUPLE = {
   prenom1: "Camille",
   prenom2: "Florian",
-  debut: "2023-07-27" // format AAAA-MM-JJ, sert au compteur de jours sur l'écran d'accueil
+  debut: "2023-07-27"
 };
 
-// ---- 2) Les étapes de votre voyage (ordre chronologique) ---------------
-// photo : mets le nom du fichier que tu auras placé dans le dossier "photos/"
-//         (ex: "photos/01-debut.jpg"). Si le fichier n'existe pas encore,
-//         un joli cadre "ajoute ta photo ici" s'affiche à la place — rien ne casse.
+// ---- Les étapes -----------------------------------------------------------
+// photos : tableau de 1 ou 2 (ou plus) noms de fichiers dans "photos/".
+// Si un fichier n'existe pas encore, le cadre "ajoute une photo ici" s'affiche
+// à sa place pour cette diapo — rien ne casse. S'il y a 2+ photos, une petite
+// galerie avec flèches et points apparaît automatiquement, au même format.
 const ETAPES = [
   {
     annee: "2023",
     date: "27 juillet 2023",
     titre: "L'entrée dans la secte ",
-    photo: "photos/01-debut.jpg",
+    photos: ["photos/01-debut-1.jpg", "photos/01-debut-2.jpg"],
     texte: "Ce jour-là , ou en tout cas un peu plus tard en aout en réalité, nous être revu au camping avait tout changé, et tout commençait",
     secret: "Depuis ce jour, il ne s'est plus passé une seule journée sans que je pense à toi."
   },
@@ -459,7 +450,7 @@ const ETAPES = [
     annee: "2023",
     date: "décembre 2023",
     titre: "Nausicaä, c'était le début de nos premiers vrai date et l'époque ou je commençait a venir a Calais.",
-    photo: "photos/02-nausicaa.jpg",
+    photos: ["photos/02-nausicaa-1.jpg", "photos/02-nausicaa-2.jpg"],
     texte: "Nez collés à la grande vitre de l'aquariums, on a regardé passer les requins et les méduses comme deux enfants émerveillés. Un des tout premiers souvenirs qui m'a marqué.",
     secret: "Je crois que c'est ce jour-là que j'ai compris qu'avec toi, même une sortie simple devient un souvenir pour la vie."
   },
@@ -467,7 +458,7 @@ const ETAPES = [
     annee: "2023",
     date: "décembre 2023",
     titre: "Notre premier Noël",
-    photo: "photos/03-noel.jpg",
+    photos: ["photos/03-noel-1.jpg", "photos/03-noel-2.jpg"],
     texte: "Le sapin chez les Tyler, le cadeaux de mme chaton emballés à la va-vite. La premiere rencontre avec patrick et Kevin et tout le reste de la famille. J'étais tellement stresser et c'était mon tout premier noël, a partir de ce moment vous m'avez convertis .",
     secret: "Aglaë était toute fine a ce moment là mdrr et j'ai découvert ce que c'était de faire un noel chez les Tyler, une vrai institution ."
   },
@@ -475,7 +466,7 @@ const ETAPES = [
     annee: "2025",
     date: "juin 2025",
     titre: "Pairi Daiza et les faux dino",
-    photo: "photos/04-pairidaiza.jpg",
+    photos: ["photos/04-pairidaiza-1.jpg", "photos/04-pairidaiza-2.jpg"],
     texte: "Notre première sortie au zoo tout les deux,à défaut d'avoir fait celui de Lille avant, il faisait chaud mais que ce soit devant les lions, les faux dino ou meme les loups (pour mme chaton) on était émerveillé et surtout je me rappelle a quel point on avait rigolé.",
     secret: "J'étais vraiment deg de ne oas avoir vu les loups blanc et je crois que j'ai tout autant aimé le retour quand on est allez chercher les bonbons au magasin géant."
   },
@@ -483,7 +474,7 @@ const ETAPES = [
     annee: "2025",
     date: "août 2025",
     titre: "Bruxelles et Mundo Pixar",
-    photo: "photos/05-bruxelles.jpg",
+    photos: ["photos/05-bruxelles-1.jpg", "photos/05-bruxelles-2.jpg"],
     texte: "Notre premier vrai voyage en couple, rien que nous deux, enfin après avoir déposé les deux zigotos a leur vol. j'ai adoré cette escapade avec toi, tu l'as rendue magique",
     secret: "L'hotel était dingue mais prendre une photo avec Cars l'était encore plus. Mais rien n'égalera la lueur dans tes yeux devant le petit dej buffet a volonté de l'hotel"
   },
@@ -491,7 +482,7 @@ const ETAPES = [
     annee: "2025",
     date: "novembre 2025",
     titre: "Disneyland Paris et cosy cone",
-    photo: "photos/06-disney.jpg",
+    photos: ["photos/06-disney-1.jpg", "photos/06-disney-2.jpg"],
     texte: "Merci le CE AF on a pu faire toute les attractions et même le looping d'indiana Jones ! A tes côtés c'était digne d'un compte de fée et j'avais la plus belle des pricesses avec moi. On va remettre ça cette année c'est certain",
     secret: "Encore une fois le petit dej était incroyable mais mon plus beau souvenir c'est nous deux flanant dans le parc sans but précis, mains dans la mains en profitant de l'instant."
   },
@@ -499,7 +490,7 @@ const ETAPES = [
     annee: "2026",
     date: "février 2026",
     titre: "Londre et le meilleur cadeau",
-    photo: "photos/07-harrypotter.jpg",
+    photos: ["photos/07-harrypotter-1.jpg", "photos/07-harrypotter-2.jpg"],
     texte: "Que dire sur ce voyage, j'ai beaucoup voyagé mais ce voyage était le meilleur que j'ai pu faire de ma vie, que ce soit les musées, les studios harry potter... TOUT était incroyable c'était NOTRE voyage et j'ai tellement hâte qu'on puisse en faire d'autres.",
     secret: "c'était l'un des plus beau cadeau que tu m'ai fait. 4j et pourtant tu as survecue a Londre sans parler une seule fois anglais ! Trop forte"
   },
@@ -507,17 +498,13 @@ const ETAPES = [
     annee: "2026",
     date: "10 mai 2026",
     titre: "Nos fiancailles",
-    photo: "photos/08-fiancailles.jpg",
+    photos: ["photos/08-fiancailles-1.jpg", "photos/08-fiancailles-2.jpg"],
     texte: "Il s'agit probablement d'un des plus beau jour de ma vie, ça marque une vraie étape et je suis fier que tu soit désormais ma fiancée, tu me rend heureux chaque jour, Je t'aime plus que tout.",
     secret: "On a mis le niveau tellement haut que ça va être dur de faire mieux pour notre mariage mais on a SLAYYYY ! On a fait nos plus belles photos"
   }
 ];
 
-// ---- 3) Le quiz "devine ce que je pense de toi" ---------------------------
-// correct : index (0,1,2...) de LA réponse que TOI tu choisis comme vraie.
-// ⚠️ Ce sont tes réponses à toi, Florian — remplace les options et le bon
-// index par ce que tu penses vraiment. Les questions posées sont des exemples,
-// change-les librement, l'idée c'est que Camille essaie de deviner ta pensée.
+// ---- Le quiz "devine ce que je pense de toi" ------------------------------
 const QUIZ = [
   {
     question: "Selon moi, ta plus belle qualité c'est...",
@@ -546,7 +533,7 @@ const QUIZ = [
   }
 ];
 
-// ---- 4) La déclaration finale ---------------------------------------------
+// ---- La déclaration finale --------------------------------------------------
 const DECLARATION = {
   titre: "Trois ans, et tellement plus à venir",
   texte: `Camille,
@@ -563,11 +550,8 @@ Je t'aime.`,
 
 /* =========================================================================
    ==========================  FIN DE LA ZONE À MODIFIER  =================
-   Le code plus bas construit la page à partir de ce que tu as écrit au-dessus.
-   Tu n'as normalement rien à changer ici.
 ========================================================================= */
 
-// ---- champ d'étoiles ----
 (function(){
   const champ = document.getElementById('champ-etoiles');
   const n = window.innerWidth < 600 ? 26 : 46;
@@ -580,7 +564,6 @@ Je t'aime.`,
   }
 })();
 
-// ---- compteur de jours ----
 (function(){
   const debut = new Date(COUPLE.debut+'T00:00:00');
   const auj = new Date();
@@ -590,24 +573,40 @@ Je t'aime.`,
   document.getElementById('intro-eyebrow').textContent = `Pour Mme chaton, de la part de ton amoureux`;
 })();
 
-// ---- construction des étapes ----
+// ---- construction des étapes (avec mini-galerie photo) --------------------
 const voyage = document.getElementById('voyage');
 ETAPES.forEach((e, i) => {
   const el = document.createElement('article');
   el.className = 'etape';
   el.dataset.annee = e.annee;
+
+  const diapos = e.photos.map((src) => `
+    <div class="galerie-diapo">
+      <img src="${src}" alt="${e.titre}" loading="lazy"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <div class="placeholder" style="display:none;">
+        <span>📷</span>
+        <span>Ajoute une photo ici<br>(${src})</span>
+      </div>
+    </div>
+  `).join('');
+
+  const controles = e.photos.length > 1 ? `
+    <button class="galerie-fleche gauche" type="button" aria-label="Photo précédente">‹</button>
+    <button class="galerie-fleche droite" type="button" aria-label="Photo suivante">›</button>
+    <div class="galerie-points">
+      ${e.photos.map((_, pi) => `<span class="point${pi===0?' actif':''}"></span>`).join('')}
+    </div>
+  ` : '';
+
   el.innerHTML = `
     <div class="pastille"></div>
     <div class="carte">
       <p class="date-etape">${e.date}</p>
       <h3 class="titre-etape">${e.titre}</h3>
-      <div class="cadre-photo">
-        <img src="${e.photo}" alt="${e.titre}" loading="lazy"
-             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-        <div class="placeholder" style="display:none;">
-          <span>📷</span>
-          <span>Ajoute une photo ici<br>(${e.photo})</span>
-        </div>
+      <div class="cadre-photo galerie">
+        <div class="galerie-piste">${diapos}</div>
+        ${controles}
       </div>
       <p class="texte-etape">${e.texte}</p>
       <button class="bouton-secret" data-index="${i}">✦ Un secret vous attend</button>
@@ -624,6 +623,34 @@ document.querySelectorAll('.bouton-secret').forEach(btn => {
     const msg = document.getElementById('secret-'+i);
     const ouvert = msg.classList.toggle('ouvert');
     btn.textContent = ouvert ? '✦ Refermer le secret' : '✦ Un secret vous attend';
+  });
+});
+
+// ---- comportement des mini-galeries photo ---------------------------------
+document.querySelectorAll('.galerie').forEach(galerie => {
+  const piste = galerie.querySelector('.galerie-piste');
+  const points = galerie.querySelectorAll('.galerie-points .point');
+  const fleGauche = galerie.querySelector('.galerie-fleche.gauche');
+  const fleDroite = galerie.querySelector('.galerie-fleche.droite');
+  if(!piste || points.length < 2) return;
+
+  function indexActuel(){
+    return Math.round(piste.scrollLeft / piste.clientWidth);
+  }
+  function allerA(i){
+    const cible = Math.max(0, Math.min(points.length - 1, i));
+    piste.scrollTo({left: cible * piste.clientWidth, behavior:'smooth'});
+  }
+  fleGauche.addEventListener('click', () => allerA(indexActuel() - 1));
+  fleDroite.addEventListener('click', () => allerA(indexActuel() + 1));
+
+  let delaiScroll;
+  piste.addEventListener('scroll', () => {
+    clearTimeout(delaiScroll);
+    delaiScroll = setTimeout(() => {
+      const i = indexActuel();
+      points.forEach((p, pi) => p.classList.toggle('actif', pi === i));
+    }, 60);
   });
 });
 
@@ -648,7 +675,6 @@ const observer = new IntersectionObserver((entrees) => {
 }, {threshold:0.35});
 etapesDom.forEach(e => observer.observe(e));
 
-// masquer le cadran une fois revenu tout en haut / arrivé en bas
 const introObs = new IntersectionObserver((entrees) => {
   entrees.forEach(entree => { if(entree.isIntersecting) cadran.classList.remove('visible'); });
 }, {threshold:0.6});
@@ -678,7 +704,7 @@ quizContainer.addEventListener('click', (e) => {
   if(!target) return;
   const qi = Number(target.dataset.q);
   const oi = Number(target.dataset.o);
-  if(reponses[qi] !== null) return; // déjà répondu à cette question
+  if(reponses[qi] !== null) return;
 
   reponses[qi] = oi;
   const bonneReponse = QUIZ[qi].correct;
