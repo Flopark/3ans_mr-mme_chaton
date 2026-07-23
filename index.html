@@ -359,7 +359,18 @@ p{margin:0;}
 footer{
   text-align:center; padding:30px 22px 60px; font-size:.78rem; opacity:.4; position:relative; z-index:1;
 }
+/* Atlas de souvenirs — esthétique uniquement */
+:root{--foret:#25483c;--profond:#17342d;--sauge:#b9d5bd;--brume:#eff4e9} body{background:linear-gradient(180deg,#dbe8db 0%,#a9c8ad 28%,#436c59 60%,#eff2e7 100%);color:var(--profond);color-scheme:light}.etoiles{opacity:.28;mix-blend-mode:multiply}.etoiles span{background:#e2eee0;width:3px;height:3px}.conteneur{max-width:980px}#intro{color:#e2eee0;overflow:hidden;background:radial-gradient(circle at 50% 55%,rgba(217,237,211,.35) 0 1px,transparent 2px) 0 0/42px 42px,radial-gradient(ellipse at 50% 105%,rgba(6,35,26,.7),transparent 65%),linear-gradient(145deg,#193a31,#3f705a 55%,#86aa88)}#intro::before,#intro::after{content:"";position:absolute;border-radius:50%;pointer-events:none}#intro::before{width:120vmax;height:120vmax;border:1px solid rgba(226,238,221,.18);animation:onde 14s linear infinite}#intro::after{inset:auto -10% -44%;height:55%;background:radial-gradient(ellipse at center,rgba(203,225,195,.35),transparent 66%);filter:blur(8px)}@keyframes onde{to{transform:rotate(360deg)}}.eyebrow,.date-etape{color:#bfe0bb}#intro h1,#intro .sous-titre{color:#e2eee0}#intro h1 em{color:#d7efcd}.molette-principale{background:repeating-conic-gradient(from 0deg,#d7edcf 0deg 4deg,transparent 4deg 18deg)}.molette-interieure{background:radial-gradient(circle at 35% 30%,#5b9170,#17342d 75%);border-color:#d7edcf}.bouton-demarrer,.bouton-debloquer{background:linear-gradient(180deg,#e5f1dc,#a5cba8);color:var(--profond);box-shadow:0 12px 30px rgba(7,42,28,.3)}
+#voyage{max-width:none;padding:0;margin:0 calc(50% - 50vw);overflow:clip}.rail{display:none}.atlas{position:sticky;top:0;height:100vh;height:100dvh;margin-bottom:-100vh;overflow:hidden;z-index:0;background:linear-gradient(135deg,#dcead9,#b8d3b8 55%,#90b092)}.atlas::before{content:"";position:absolute;inset:0;opacity:.55;background:radial-gradient(ellipse at 15% 24%,rgba(49,100,74,.22) 0 5%,transparent 5.4%),radial-gradient(ellipse at 72% 68%,rgba(49,100,74,.20) 0 9%,transparent 9.4%),repeating-linear-gradient(115deg,transparent 0 28px,rgba(255,255,255,.12) 29px 30px)}.atlas::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 30%,rgba(15,57,40,.32) 100%);pointer-events:none}.atlas-monde{position:absolute;width:170%;height:170%;left:-35%;top:-36%;transform-origin:center;transition:transform .18s linear}.atlas-terre{fill:#dfead8;stroke:#6f9e78;stroke-width:1.8;filter:drop-shadow(0 12px 18px rgba(31,76,54,.18))}.atlas-riviere{fill:none;stroke:#a6cdd1;stroke-width:3;opacity:.8}.atlas-route{fill:none;stroke:#496e55;stroke-width:1.5;stroke-dasharray:3 6;opacity:.75}.trace-voyage{fill:none;stroke:#f5f2dc;stroke-width:3;stroke-dasharray:2 9;stroke-linecap:round;filter:drop-shadow(0 1px 2px rgba(18,60,41,.35))}.repere{fill:#315e49;stroke:#f5f4df;stroke-width:2;transition:r .5s ease,fill .5s ease}.repere.actif{fill:#dcefcf;stroke:#35664e;stroke-width:3;filter:drop-shadow(0 0 10px #f5ffe9)}.vague-repere{fill:none;stroke:#eff8e7;stroke-width:1.5;opacity:0;transform-origin:center}.repere-actif .vague-repere{opacity:.8;animation:repere 2.2s ease-out infinite}@keyframes repere{from{transform:scale(.5);opacity:.9}to{transform:scale(2.3);opacity:0}}.boussole{position:absolute;right:5vw;top:7vh;z-index:2;width:62px;height:62px;border:1px solid rgba(35,73,53,.5);border-radius:50%;display:grid;place-items:center;color:#315e49;font-family:var(--police-affiche);font-size:.72rem;letter-spacing:.2em;transform:rotate(18deg)}.boussole::after{content:"✦";font-size:1.1rem;letter-spacing:0}.cartouche-lieu{position:absolute;left:5vw;bottom:7vh;color:#224a38;z-index:2;text-transform:uppercase;letter-spacing:.25em;font-size:.67rem;min-height:1em}.cartouche-lieu::before{content:"✦  ";color:#eaf6df}
+.etape{min-height:100vh;min-height:100dvh;width:100%!important;margin:0!important;padding:13vh 8vw 11vh!important;display:flex;align-items:center;justify-content:flex-end;pointer-events:none;z-index:1}.etape:nth-of-type(odd){justify-content:flex-start}.etape .pastille{display:none}.carte{pointer-events:auto;width:min(460px,100%);padding:20px;border:1px solid rgba(34,76,56,.18);border-radius:24px;background:rgba(239,246,233,.78);backdrop-filter:blur(16px);box-shadow:0 18px 50px rgba(18,60,41,.17);color:var(--profond);opacity:0;transform:translateY(45px) scale(.96);transition:opacity .75s ease,transform .75s cubic-bezier(.2,.8,.2,1)}.etape.actif .carte{opacity:1;transform:translateY(0) scale(1)}.date-etape{color:#4e8060}.titre-etape{color:#1d4433}.cadre-photo{border-color:rgba(35,80,58,.25);background:#a9c7aa;border-radius:16px;box-shadow:0 8px 20px rgba(31,76,54,.14)}.galerie-fleche{background:rgba(35,75,54,.65);border-color:#e9f0df;color:#fff}.galerie-fleche:hover{background:#5f9270}.galerie-points .point{background:rgba(246,241,228,.55)}.galerie-points .point.actif{background:#dceecf}.texte-etape{color:#294d3c}.bouton-secret{border-color:#729c79;color:#305c46;background:rgba(214,234,211,.38)}.bouton-secret:hover{background:rgba(175,207,177,.6)}.message-secret{color:#315f48}
+#quiz{max-width:760px;padding:110px 22px 60px;color:#224536;position:relative;z-index:2}#quiz .eyebrow{color:#4c8461}#quiz h2{color:#1e4634}.quiz-intro{opacity:.75}.question-bloc{border-color:rgba(48,94,70,.18);background:rgba(245,249,239,.62);border-radius:18px;box-shadow:0 8px 24px rgba(33,75,51,.08)}.question-bloc h3,.option{color:#294d3c}.option{border-color:rgba(48,94,70,.2);background:rgba(255,255,255,.45)}.option:hover{border-color:#61916d;background:#e5f0e1}.option.bonne{border-color:#6caa79;background:#dcefdc;color:#28513b}.option.mauvaise{border-color:#c48275;background:#f4dfd8}.etat-quiz{color:#386c4d}#finale{max-width:none;min-height:100vh;background:radial-gradient(ellipse at 50% 25%,#f8fbf2 0%,#d7e8d6 46%,#aac6aa 100%);color:#244a38}.enveloppe .corps{background:linear-gradient(180deg,#b9d6b8,#81ac8a);border-color:#507d5e}.enveloppe .rabat{background:linear-gradient(160deg,#ecf4e4,#a7c8a8)}.enveloppe .cachet{background:#779f7b;border-color:#e8f2dd}.lettre h2{color:#2f6849}.lettre p{color:#244a38}.signature{color:#4f8961}.indice-enveloppe{color:#315943}footer{color:#244a38;opacity:.65;background:#aac6aa}#cadran{background:radial-gradient(circle at 35% 30%,#dcebd8,#4c7d60 70%);border-color:#eff5e8;box-shadow:0 6px 20px rgba(24,66,44,.25)}#cadran .aiguille{color:#244a38}@media(max-width:560px){.etape,.etape:nth-of-type(odd){justify-content:center;padding:16vh 22px 10vh!important}.atlas-monde{width:240%;height:170%;left:-70%}.boussole{right:22px;top:28px}.cartouche-lieu{left:22px;bottom:30px}.carte{padding:16px;border-radius:19px}}
+/* Carte satellite réelle */
+.atlas{background:#789b7d!important}.atlas::before{display:none}.atlas::after{z-index:3;background:radial-gradient(ellipse at center,transparent 42%,rgba(15,57,40,.28) 100%)}#carte-reelle{position:absolute;inset:0;z-index:1;filter:saturate(.72) sepia(.12) hue-rotate(12deg) brightness(.9)}.voile-carte{position:absolute;inset:0;z-index:2;background:linear-gradient(120deg,rgba(218,237,213,.12),rgba(38,84,61,.08));pointer-events:none}.leaflet-container{background:#7fa083;font-family:var(--police-texte)}.leaflet-control-attribution{background:rgba(240,247,235,.56)!important;color:#244a38!important;font-size:9px!important}.leaflet-control-attribution a{color:#244a38!important}
+
+/* La déclaration reste hors du parcours tant que le quiz n'est pas terminé. */
+#finale.verrouillee{display:none!important}
 </style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
 
@@ -421,6 +432,7 @@ footer{
 
 <footer>fait avec ♥ par Mr Chaton </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 /* =========================================================================
    ============================  ZONE À MODIFIER  =========================
@@ -575,10 +587,37 @@ Je t'aime.`,
 
 // ---- construction des étapes (avec mini-galerie photo) --------------------
 const voyage = document.getElementById('voyage');
+const LIEUX = [
+  {lat:43.759, lng:5.875, zoom:15}, // Gréoux-les-Bains
+  {lat:50.726, lng:1.615, zoom:16}, // Nausicaá
+  {lat:50.951, lng:1.858, zoom:14}, // Calais
+  {lat:50.608, lng:3.884, zoom:16}, // Pairi Daiza
+  {lat:50.896, lng:4.337, zoom:15}, // Bruxelles / Mundo Pixar
+  {lat:48.867, lng:2.783, zoom:15}, // Disneyland Paris
+  {lat:51.507, lng:-0.128, zoom:12}, // Londres
+  {lat:50.951, lng:1.858, zoom:15} // souvenir des fiançailles
+];
+voyage.insertAdjacentHTML('afterbegin', `
+  <div class="atlas" aria-hidden="true">
+    <div id="carte-reelle"></div>
+    <div class="voile-carte"></div>
+  </div>`);
+const carteReelle = L.map('carte-reelle', {
+  zoomControl:false, attributionControl:true, scrollWheelZoom:false,
+  doubleClickZoom:false, dragging:false, touchZoom:false, keyboard:false
+}).setView([LIEUX[0].lat, LIEUX[0].lng], LIEUX[0].zoom);
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  attribution:'Tiles © Esri', maxZoom:19
+}).addTo(carteReelle);
+function activerLieu(index){
+  const lieu = LIEUX[index]; if(!lieu) return;
+  carteReelle.flyTo([lieu.lat, lieu.lng], lieu.zoom, {duration:2.2, easeLinearity:.22, noMoveStart:false});
+}
 ETAPES.forEach((e, i) => {
   const el = document.createElement('article');
   el.className = 'etape';
   el.dataset.annee = e.annee;
+  el.dataset.index = i;
 
   const diapos = e.photos.map((src) => `
     <div class="galerie-diapo">
@@ -663,6 +702,7 @@ document.getElementById('bouton-demarrer').addEventListener('click', () => {
 const cadran = document.getElementById('cadran');
 const cadranAnnee = document.getElementById('cadran-annee');
 const etapesDom = document.querySelectorAll('.etape');
+setTimeout(() => carteReelle.invalidateSize(), 100);
 
 const observer = new IntersectionObserver((entrees) => {
   entrees.forEach(entree => {
@@ -670,6 +710,7 @@ const observer = new IntersectionObserver((entrees) => {
       entree.target.classList.add('actif');
       cadran.classList.add('visible');
       cadranAnnee.textContent = entree.target.dataset.annee;
+      activerLieu(Number(entree.target.dataset.index));
     }
   });
 }, {threshold:0.35});
@@ -698,6 +739,9 @@ QUIZ.forEach((q, qi) => {
 
 const etatQuiz = document.getElementById('etat-quiz');
 const boutonDebloquer = document.getElementById('bouton-debloquer');
+const finale = document.getElementById('finale');
+finale.classList.add('verrouillee');
+finale.setAttribute('aria-hidden', 'true');
 
 quizContainer.addEventListener('click', (e) => {
   const target = e.target.closest('.option');
@@ -729,6 +773,8 @@ function verifierQuiz(){
     etatQuiz.textContent = `${repondu} / ${QUIZ.length} questions répondues...`;
     return;
   }
+  finale.classList.remove('verrouillee');
+  finale.removeAttribute('aria-hidden');
   if(correct === QUIZ.length){
     etatQuiz.textContent = "Tu me connais par cœur. ✦";
     boutonDebloquer.classList.add('actif');
